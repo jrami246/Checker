@@ -1,0 +1,37 @@
+name: Best Buy Stock Check
+
+on:
+  schedule:
+    # 10 AM Arizona (MST) = 17:00 UTC
+    - cron: "0 17 * * *"
+
+    # 10 PM Arizona (MST) = 05:00 UTC
+    - cron: "0 5 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  check-stock:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Run checker
+        run: node check.js
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          YOUR_PHONE_EMAIL: ${{ secrets.YOUR_PHONE_EMAIL }}
