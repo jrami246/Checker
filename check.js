@@ -5,11 +5,12 @@ import fs from "fs";
 const PRODUCT_URL = "https://www.bestbuy.com/site/6665825.p?skuId=6665825";
 
 // change this to your phone SMS email
-const YOUR_PHONE_EMAIL = "4803958191@txt.att.net";
+const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
 
-// change these
-const GMAIL_USER = "jackieramirez986@gmail.com";
-const GMAIL_APP_PASSWORD = "agoyiqslsmrjeeps";
+Do the same for email if needed:
+
+const GMAIL_USER = process.env.GMAIL_USER;
+const YOUR_PHONE_EMAIL = process.env.YOUR_PHONE_EMAIL;
 
 const SEEN_FILE = "seen-status.json";
 
