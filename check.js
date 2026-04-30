@@ -44,7 +44,7 @@ async function checkStock() {
   console.log("Checking Best Buy...");
 
   // ✅ FIX 1: go to PRODUCT PAGE (not cart)
-  await page.goto("https://www.bestbuy.com/site/6665825.p?skuId=6665825", {
+await page.goto("https://www.bestbuy.com/cart", {
     waitUntil: "domcontentloaded",
     timeout: 30000,
   });
