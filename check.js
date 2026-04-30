@@ -40,16 +40,12 @@ function saveSeen(data) {
 }
 
 async function checkStock() {
-  const context = await chromium.launchPersistentContext(
-    "C:/Users/jacki/chrome-profile",
-    {
-      headless: false,
-      channel: "chrome",
-      args: ["--disable-http2"],
-    }
-  );
+  const browser = await chromium.launch({
+  headless: true,
+  args: ["--no-sandbox"]
+});
 
-  const page = await context.newPage();
+const page = await browser.newPage();
 
   console.log("Checking Best Buy...");
 await page.goto("https://www.bestbuy.com/cart", {
