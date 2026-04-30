@@ -44,29 +44,44 @@ async function checkStock() {
 
   console.log("Checking Best Buy...");
 
-  await page.goto("https://www.bestbuy.com/cart", {
+  // ✅ FIX 1: go to PRODUCT PAGE (not cart)
+  await page.goto("https://www.bestbuy.com/site/6665825.p?skuId=6665825", {
     waitUntil: "domcontentloaded",
     timeout: 30000,
   });
 
-  await page.waitForTimeout(5000);
+  await page.waitForTimeout(4000);
 
+  // ✅ FIX 2: try to open store selector
   try {
-    const pickupStoreBtn = page
+    await page
       .locator(
-        'button:has-text("Surprise"), a:has-text("Surprise"), button:has-text("Pickup"), a:has-text("Pickup"), button:has-text("Change store"), a:has-text("Change store")'
+        'button:has-text("Check nearby stores"), button:has-text("Find stores"), button:has-text("Change store")'
       )
-      .first();
+      .first()
+      .click({ timeout: 8000 });
 
-    await pickupStoreBtn.click({ timeout: 10000 });
-    console.log("Clicked pickup store/change store");
-    await page.waitForTimeout(7000);
-  } catch (err) {
-    console.log("Could not click pickup store:");
-    console.log(err.message);
+    console.log("Opened store selector");
+    await page.waitForTimeout(3000);
+  } catch (e) {
+    console.log("Could not open store selector");
+  }
+
+  // ✅ FIX 3: set ZIP manually
+  try {
+    const zipInput = page.locator('input[placeholder*="ZIP"], input[type="search"]').first();
+    await zipInput.fill("85008");
+    await page.keyboard.press("Enter");
+    console.log("Entered ZIP 85008");
+    await page.waitForTimeout(5000);
+  } catch (e) {
+    console.log("Could not set ZIP");
   }
 
   const text = await page.textContent("body");
+
+  console.log("DEBUG TEXT:");
+  console.log(text.slice(0, 1500));
 
   const allAZStores = [
     "Camelback",
