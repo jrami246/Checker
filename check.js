@@ -36,10 +36,9 @@ function saveSeen(data) {
 
 async function checkStock() {
   const browser = await chromium.launch({
-    headless: true,
-    args: ["--no-sandbox"],
-  });
-
+  headless: true,
+  args: ["--no-sandbox", "--disable-http2"],
+});
   const page = await browser.newPage();
 
   console.log("Checking Best Buy...");
